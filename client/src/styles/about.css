@@ -1,0 +1,52 @@
+.mernstack{
+    animation: animate 1s  ease-in 0s 1 !important
+  }
+  
+  @keyframes animate{
+  from{
+  transform: translateX(-300px);
+  }
+  to{
+    transform: translateX(0);
+  }
+  
+  }
+  .info{
+    margin-left: 384px;
+  }
+ 
+  @media (max-width:1024px)and (min-width:765px) {
+    .info{
+      margin-left: 150px;
+    }
+  }
+  @media (max-width:540px)and (min-width:465px) {
+    .info{
+      margin-left: 150px;
+    }
+    .description{
+      margin-left: 100px;
+    }
+   .last-description{
+    margin-left: 70px;
+   }
+  }
+  @media (max-width:465px){
+    .info{
+    margin-left: 50px;
+    }
+    .description{
+      margin-left: 100px;
+      font-size: 10px;
+    }
+    .last-description{
+      margin-left: 76px;
+      font-size: 10px;
+    }
+    .title{
+      font-size:12px ;
+    }
+    .button{
+      font-size: 12px;
+    }
+  }

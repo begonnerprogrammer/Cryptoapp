@@ -1,0 +1,64 @@
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+form{
+   margin: 0 auto; 
+   margin-top: 15%;
+  max-width: 200px; 
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.error{
+  color: red;
+}
+
+.post_form{
+  width: 50%;
+  border: 1px solid gray;
+  padding: 20px;
+} 
+
+ .post_form input,.post_form textarea, .post_form button{
+  width: 100%;
+  margin: 10px 0px;
+  padding: 8px;
+}
+
+.post_form .file{
+  border: 1px solid gray;
+}
+
+.post_form button{
+  cursor: pointer;
+  background-color: green;
+  color: white;
+} 
+
+
+/* posts */
+
+.image{
+  height:300px;
+  width: 400px;
+}
+
+@media (max-width:465px){
+ .post{
+  flex-direction: column;
+ }
+ .post h2{
+  font-size: 15px;
+ }
+ .post p{
+  font-size: 12px;
+ }
+}
+
+
+
+
+

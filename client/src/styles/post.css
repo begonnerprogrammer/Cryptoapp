@@ -1,0 +1,33 @@
+
+
+@media (max-width:768px) and (min-width:465px){
+    .img{
+        width: 70vw;
+        height: 25vh;
+    }
+    .main{
+        flex-direction: column;
+        text-align: start;
+        margin-left: 50px;
+        }
+}
+
+@media (max-width:465px){
+    .p-text{
+        font-size: 10px;
+    }
+    .img{
+        width: 90vw;
+        height: 25vh;
+    }
+    .main{
+        flex-direction: column;
+        text-align: start;
+        }
+        .button{
+            margin-top: 15px;
+        }
+        .OR{
+        margin-top: 20px;
+        }
+}

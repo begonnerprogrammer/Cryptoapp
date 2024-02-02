@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+.active{
+color:white;
+}
+
+@media (max-width:280px){
+    .list li{
+        font-size: 7px;
+        padding: 12px;
+    }
+}
+@media (max-width:465px) and (min-width:285px){
+    .list li{
+        font-size: 10px;
+        padding: 14px;
+    }
+}
+
+@media (max-width:768px) and (min-width:465px){
+    .list li{
+        font-size: 10px;
+        padding: 18px;
+    }
+}

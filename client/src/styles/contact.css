@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .contactinput {
+        @apply outline-none bg-slate-400/10 rounded-sm border-b px-2 py-2 border-[#242424] text-gray-500 placeholder-gray-500 transition-all focus:border-[#F7AB0A]/40 focus:text-[#F7AB0A]/40 hover:bg-gray-700
+    }
+}
+
+
+
+
+
+
+@media (max-width:465px) {
+    .icon {
+        height: 10px;
+        width: 10px;
+    }
+
+    .icontext {
+        font-size: 15px;
+
+    }
+
+    .main form {
+        max-width: 220px;
+        border: 1px solid #242424;
+
+    }
+
+}

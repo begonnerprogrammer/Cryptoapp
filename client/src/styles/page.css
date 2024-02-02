@@ -1,0 +1,25 @@
+.mern1{
+    animation: animate1 1s ease-in 1;
+  }
+  
+  @keyframes animate1{
+  0%{
+  opacity: 0;
+  }
+  100%{
+  opacity: 1;
+  }
+  }
+
+  @media (max-width:465px){
+    .main{
+     text-align: center;
+     margin: 2px;
+    }
+    .main h1{
+      font-size: 12px;
+    }
+    .button{
+      font-size:12px;
+    }
+  }
