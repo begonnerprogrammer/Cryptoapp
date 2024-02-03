@@ -1,10 +1,12 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-
+import { useContext } from 'react'
+import { userContext } from '../App'
 const Posts = () => {
   
-
+    // using conntextapi
+    const username=useContext(userContext);
     const [posts,setPosts]=useState([]);
     useEffect(()=>{
         axios.get('getposts')
@@ -32,7 +34,18 @@ const Posts = () => {
               
         ))
        }
-        <button className='button border-2 mb-3 border-black border-solid rounded-md md:text-xl p-2 hover:bg-black hover:text-white transition duration-500 ml-2'>Create POST</button>
+       {
+        username.email || username.username ?<Link to={"/create"}><button className='button border-2 mb-3 border-black border-solid rounded-md md:text-xl p-2 hover:bg-black hover:text-white transition duration-500 ml-2'>Create POST</button></Link>
+         
+          :   <Link to={"/login"}><button className='button border-2 mb-3 border-black border-solid rounded-md md:text-xl p-2 hover:bg-black hover:text-white transition duration-500 ml-2'>LOGIN TO CREATE POST</button></Link>
+       }
+       
+
+
+      
+
+
+
       </div>
     </>
   )
