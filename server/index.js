@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = 4000 || process.env.PORT;
 const Collection = require("./src/schema/schema");
-
+const cors=require("cors")
 // const bcrypt = require("bcrypt");
 // const jwt = require("jsonwebtoken");
 const nodemailer=require("nodemailer");
@@ -12,11 +12,15 @@ const router=require("./src/router/route")
 const PostModel =require("./src/schema/postmodel")
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({
+    origin:["https://deploy-mern-1whq.vercel.app"],
+    methods:["POST","GET","CREATE","DELETE"],
+    credentials:true
+}))
 
 //To use images from public folder
 app.use(express.static('Public'))
 require("./src/db/conn");
-
 app.use(router)
 
 

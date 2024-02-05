@@ -3,6 +3,7 @@ const router = new express.Router();
 const Collection = require('../schema/schema')
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const cors=require("cors")
 const path = require("path");
 const multer = require("multer");
 const PostModel = require('../schema/postmodel');
