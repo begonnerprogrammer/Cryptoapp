@@ -43,7 +43,11 @@ const verify = (req, res, next) => {
     }
 }
 
+ 
 
+router.get("/",(req,res)=>{
+       res.json("Hello")
+})
 
 //logout functionality
 router.get("/logout", (req, res) => {
