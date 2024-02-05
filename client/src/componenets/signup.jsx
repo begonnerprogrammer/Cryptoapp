@@ -67,7 +67,7 @@ else{
 
 
 const submit=async()=>{
-  const res=await fetch('/register',{
+  const res=await fetch('blogapp-mernstack-api.vercel.app/register',{
 
     //rrules to write
     method:"POST",
