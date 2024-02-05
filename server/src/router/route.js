@@ -119,7 +119,7 @@ router.post("/contact", (req, res) => {
 
 
 //signUp
-router.post("blogapp-mernstack-api.vercel.app/register", (req, res) => {
+router.post("/register", (req, res) => {
     const { name, email, password } = req.body;
 
 
