@@ -299,57 +299,66 @@ return [...prevCoins]
 
     
     </div>
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-3">
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
   {Array.isArray(coins) && coins.length > 0 ? (
     coins.map((coin, index) => (
-      <div key={index} className="rounded-2">
+      <div
+        key={index}
+        className="rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 bg-white"
+      >
         <li
-          className="list-group-item flex justify-around bg-gray-200 w-80 hover:cursor-pointer p-2"
+          className="list-none flex flex-col p-4 cursor-pointer"
           onClick={() => coindetails(coin.symbol)}
         >
-          <div className="flex flex-col">
-            <div className="flex justify-between">
-              <div>
-                <img
-                  src={coin.icon}
-                  alt={coin.name}
-                  className="text-white w-8 mt-2 mr-3 bg-orange-500 rounded-full"
-                />
-              </div>
-              <div>
-                <button
-                  className="text-xs px-3 py-1 rounded bg-sky-400 text-white hover:bg-gray-900 transition-colors duration-300"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleBuy(coin.symbol, coin.price);
-                  }}
-                >
-                  Buy
-                </button>
+          <div className="flex justify-between items-start">
+            <div className="flex items-center">
+              <img
+                src={coin.icon}
+                alt={coin.name}
+                className="w-10 h-10 bg-orange-500 rounded-full p-1 mr-3"
+              />
+              <div className="flex flex-col">
+                <h5 className="text-lg font-semibold text-gray-800">
+                  {coin.name}
+                </h5>
+                <span className="text-sm text-gray-500">{coin.symbol}</span>
               </div>
             </div>
+            <button
+              className="text-sm px-3 py-1 rounded-md bg-sky-500 text-white hover:bg-sky-600 transition-colors duration-300"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleBuy(coin.symbol, coin.price);
+              }}
+            >
+              Buy
+            </button>
+          </div>
 
-            <div className="flex mt-2">
-              <h5 className="text-base">{coin.name}</h5>
-              <h5 className="text-base text-gray-500 ml-2">{coin.symbol}</h5>
-            </div>
-
-            <div className="flex mt-1">
-              <h5 className="text-base">${coin.price}</h5>
-              <h5 className="text-base text-gray-500 ml-2">
-                {coin.hourchange}
-              </h5>
-            </div>
+          <div className="flex justify-between mt-4">
+            <span className="text-base font-medium text-gray-700">
+              ${coin.price}
+            </span>
+            <span
+              className={`text-base font-medium ${
+                parseFloat(coin.hourchange) >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {coin.hourchange}
+            </span>
           </div>
         </li>
       </div>
     ))
   ) : (
-    <h1 className="text-center text-red-600 font-semibold text-xl col-span-3">
+    <h1 className="text-center text-red-600 font-semibold text-xl col-span-3 mt-6">
       ⚠️ Please type correctly — no coins found.
     </h1>
   )}
 </div>
+
 
 
  

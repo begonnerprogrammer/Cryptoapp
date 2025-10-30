@@ -203,67 +203,76 @@ return [...prevCoins]
    console.log(mycoins)
 };
   return <>
-  {
-    coins?.map((coin)=>( <div className='flex flex-col items-center justify-center mt-4' key={coin.symbol}>
-      <div className='flex flex-col items-center justify-center'>
-        <img src={coin.icon} className=' text-white mt-1 mr-3 bg-orange-500 rounded-full w-20 h-full animate-bounce' />
-        <h1 className='font-bold'>BitCoin ({coin.symbol})</h1>
+ {
+  coins?.map((coin) => (
+    <div
+      key={coin.symbol}
+      className="flex flex-col items-center justify-center mt-6 bg-white rounded-2xl shadow-lg overflow-hidden w-full max-w-xl mx-auto"
+    >
+      {/* Coin Icon & Name */}
+      <div className="flex flex-col items-center justify-center p-4">
+        <img
+          src={coin.icon}
+          alt={coin.symbol}
+          className="w-16 h-16 bg-orange-500 rounded-full p-1 animate-bounce mb-2"
+        />
+        <h1 className="font-bold text-xl text-gray-800">
+          {coin.name} ({coin.symbol})
+        </h1>
       </div>
-      <div className='w-full flex items-center justify-center' >
-        <img src={coin.image} alt="Bitcoin" className='w-96'/>
+
+      {/* Coin Main Image */}
+      <div className="w-full flex items-center justify-center bg-gray-50 p-4">
+        <img
+          src={coin.image}
+          alt={coin.name}
+          className="w-full max-w-md rounded-lg shadow-md"
+        />
       </div>
-      <div className='flex flex-col w-full'>
-        <div className='flex justify-between p-2'>
-          <div><h5>crypto market rank</h5></div>
-          <div><h5>{coin.rank}</h5></div>
-          
-        </div>
-        <hr />
-        <div className='flex justify-between p-2'>
-          <div>
-            <h5>crypto price</h5>
-          </div>
-          <div>
-            <h5>${coin.price}</h5>
-          </div>
 
+      {/* Coin Details */}
+      <div className="flex flex-col w-full p-4 space-y-2">
+        <div className="flex justify-between p-2 bg-gray-100 rounded-md">
+          <h5 className="text-gray-600 font-medium">Crypto Market Rank</h5>
+          <h5 className="font-semibold text-gray-800">{coin.rank}</h5>
         </div>
-        <hr />
-          <div className='flex justify-between p-2'>
-          <div>
-            <h5>Market Cap</h5>
-          </div>
-          <div>
-            <h5>{coin.marketCap}</h5>
-          </div>
 
+        <div className="flex justify-between p-2 bg-gray-100 rounded-md">
+          <h5 className="text-gray-600 font-medium">Crypto Price</h5>
+          <h5 className="font-semibold text-gray-800">${coin.price}</h5>
         </div>
-        <hr />
-          <div className='flex justify-between p-2'>
-          <div>
-            <h5>24 Hour High</h5>
-          </div>
-          <div>
-            <h5>${coin.high24h}</h5>
-          </div>
 
+        <div className="flex justify-between p-2 bg-gray-100 rounded-md">
+          <h5 className="text-gray-600 font-medium">Market Cap</h5>
+          <h5 className="font-semibold text-gray-800">{coin.marketCap}</h5>
         </div>
-        <hr />
-          <div className='flex justify-between p-2'>
-          <div>
-            <h5>24 Hour Low</h5>
-          </div>
-          <div>
-            <h5>${coin.low24h}</h5>
-          </div>
 
+        <div className="flex justify-between p-2 bg-gray-100 rounded-md">
+          <h5 className="text-gray-600 font-medium">24 Hour High</h5>
+          <h5 className="font-semibold text-green-500">${coin.high24h}</h5>
         </div>
-        <div className='text-center'>
-          <button className='btn bg-info text-xs w-50'  onClick={(e) => {handleBuy(coin.symbol,coin.price);}} >Buy</button>
+
+        <div className="flex justify-between p-2 bg-gray-100 rounded-md">
+          <h5 className="text-gray-600 font-medium">24 Hour Low</h5>
+          <h5 className="font-semibold text-red-500">${coin.low24h}</h5>
+        </div>
+
+        {/* Buy Button */}
+        <div className="flex justify-center mt-4">
+          <button
+            className="px-6 py-2 bg-sky-500 text-white font-medium rounded-lg hover:bg-sky-600 transition-colors duration-300"
+            onClick={(e) => {
+              handleBuy(coin.symbol, coin.price);
+            }}
+          >
+            Buy
+          </button>
         </div>
       </div>
-    </div>))
-  }
+    </div>
+  ))
+}
+
    
   </>
 };
