@@ -8,6 +8,11 @@ const path = require("path");
 const multer = require("multer");
 const PostModel = require('../schema/postmodel');
 const Contact = require("../schema/contact");
+const api=require('../../api');
+const Money=require('../schema/money');
+
+const Coinmodel=require('../schema/coins');
+const MoneyModel = require('../schema/money');
 //context api part
 const verifyuser = (req, res, next) => {
     const token = req.cookies.token;
@@ -74,33 +79,46 @@ router.get("/test", verifyuser, (req, res) => {
 
 
 
+router.get('/api/coins', async (req, res) => {
+  try {
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd');
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
+
 //login
-router.post("/login", (req, res) => {
-    const { email, password } = req.body;
-    Collection.findOne({ email: email })
-        .then(user => {
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
+  try {
+    const user = await Collection.findOne({ email });
+    if (!user) return res.json({ status: "error", message: "No record existed" });
 
-            //comparing hashed password
-            if (user) {
-                bcrypt.compare(password, user.password, (err, responce) => {
-                    if (responce) {
-                        //creating token
-                        const token = jwt.sign({ email: user.email, name: user.name }, "jwt-swcret-key", { expiresIn: 100000 })
-                        res.cookie("token", token);
-                        res.json("success");
-                    }
-                    else {
-                        res.json("notsuccess")
-                    }
-                })
-            }
-            else {
-                res.json("no record existed")
-            }
-        })
-        .catch(err => console.log(err))
-})
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.json({ status: "error", message: "Invalid credentials" });
+
+    // create token
+    const token = jwt.sign({ email: user.email, name: user.name }, "jwt-swcret-key", { expiresIn: 100000 });
+    res.cookie("token", token);
+
+    // get user's money
+    const moneyDoc = await MoneyModel.findOne({ email: user.email });
+    const money = moneyDoc?.money || 0;
+
+    res.json({ status: "success", money });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ status: "error", message: "Server error" });
+  }
+});
+
 
 
 //contact form
@@ -118,11 +136,116 @@ router.post("/contact", (req, res) => {
 })
 
 
+
+
+router.post('/postcoin',async(req, res) => {
+  try {
+    const { coins,userEmail } = req.body;
+    console.log("Received from frontend:", coins,userEmail);
+
+ if (!coins || !userEmail) {
+      return res.status(400).json({ success: false, message: "Missing coins or userEmail" });
+    }
+
+  // Save the coin document
+     const updatedUser = await Coinmodel.findOneAndUpdate(
+      { userEmail },         // Find by email
+      { $addToSet: { coins: { $each: coins } } }, // add new coins, keep previous ones
+      { new: true, upsert: true } // Create if doesn't exist
+    );
+
+    console.log("✅ Saved or updated:", updatedUser);
+
+    // Respond properly as JSON
+    res.status(201).json({
+      success: true,
+      message: "Coin saved successfully",
+      data: coins
+    });
+
+
+  } catch (error) {
+     console.error("🔥 Error in /postcoin route:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+});
+
+    
+router.put('/updatemoney', async (req, res) => {
+  const { money, email } = req.body;
+
+  try {
+    if (!money || !email) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing Money or userEmail"
+      });
+    }
+
+    const updated = await MoneyModel.findOneAndUpdate(
+      { email },            // Find by email
+      { $set: { money } },  // Update money
+      { new: true, upsert: true } // Create if doesn't exist, return new doc
+    );
+
+    console.log("✅ Money updated:", updated);
+
+    res.status(201).json({
+      success: true,
+      message: "Money updated successfully",
+      data: updated.money   // send the actual new value from DB
+    });
+  } catch (error) {
+    console.error("🔥 Error in /updatemoney route:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message
+    });
+  }
+});
+
+
+
+
+
+router.get('/getbuycoins', async (req, res) => {
+  try {
+    const { email } = req.query; // make sure this is the same as frontend
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const userCoins = await Coinmodel.findOne({ userEmail: email });
+    if (!userCoins) return res.status(404).json({ message: "Email not found" });
+
+    res.json(userCoins);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+
+
+
+router.get('/getmoney', async (req, res) => {
+  try {
+    const { email } = req.query; // make sure this is the same as frontend
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const userCoins = await MoneyModel.findOne({ email: email });
+    if (!userCoins) return res.status(404).json({ message: "Email not found" });
+
+    res.json(userCoins);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+
 //signUp
 router.post("/register", (req, res) => {
     const { name, email, password } = req.body;
 
-
+     
 
 
     //hashing password
@@ -130,19 +253,20 @@ router.post("/register", (req, res) => {
     bcrypt.hash(password, 10).then(hash => {
         Collection.findOne({ email: email }).then(user => {
 
-
+           
 
             if (user) {
-                res.json("already have an acount")
+               return res.json("already have an acount");
             }
             else {
-
+                const coinmoney=new Money({email,money:200});
                 const user = new Collection({ name, email, password: hash });
 
 
+                coinmoney.save()
 
                 user.save().then(() => {
-                    res.status(201).json({ massage: "Massage send" });
+                    res.status(201).json({ massage: "Massage send and Money stored" });
                 })
                     .catch((e) => { console.log(e) })
 
@@ -171,6 +295,64 @@ router.delete('/deletepost/:id', (req, res) => {
         .then(result => res.json("Success"))
         .catch(e => console.log(e))
 })
+
+
+
+router.get('/data/coins.json',(req,res)=>{
+    const { name, allCoins } = req.query;
+    if(name,allCoins){
+         if(name==='null' && allCoins==='allcoins'){
+res.json(api);
+    }
+ else if(name!=='null' && allCoins==='allcoins'){
+  res.json(api.filter(coin => coin.symbol.toLowerCase() === name.toLowerCase()));
+    }
+   
+  else{
+   res.status(400).json({ error: "No valid parameters provided" });
+  }
+  
+    }
+  
+   
+ 
+})
+
+
+
+router.delete('/deletecoin', async (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ success: false, message: "Email is required" });
+
+  try {
+    const result = await Coinmodel.deleteOne({ userEmail: email });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: "No record found to delete" });
+    }
+
+    res.json({ success: true, message: "Coin record deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error", error: err.message });
+  }
+});
+
+
+
+
+router.get('/admin', async (req, res) => {
+  try {
+    const data = await Collection.find(); // wait for data
+    res.json(data); // send actual data as JSON
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
+
+
 
 //using multer library
 const storage = multer.diskStorage({

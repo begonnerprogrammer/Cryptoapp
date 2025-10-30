@@ -42,45 +42,90 @@ const navigate=useNavigate();
 
 
   return (
-    <div className='main h-[100%] flex relative flex-col text-center md:text-left md:flex-row max-w-7xl px-18 justify-evenly mx-auto items-center snap-center'>
+  <div className='main h-[100%] flex relative flex-col text-center md:text-left md:flex-row max-w-7xl px-6 justify-evenly mx-auto items-start snap-center'>
 
-      <h3 className='absolute top-8 uppercase tracking-[20px] text-blue-500  md:text-xl '>Contact</h3>
-      <div className='flex flex-col space-y-2 mt-20'>
-        <h4 className=' md:text-xl font-semibold text-center'>
-          I have got just what you need.  {""}
-          <span className='underline'>Lets Talk.</span>
-        </h4>
-        <div className='space-y-3 '>
-        <div className='flex items-center space-x-5 space-y-2 justify-center'>
-        <FaPhoneAlt  className='icon md:h-4 md:w-4 nimate-pulse text-blue-500'/>
-        <p className='icontext text-xl'>Phone.</p>
-          </div>
-          <div className='flex items-center space-x-5 space-y-2 justify-center'>
-        <FaRegEnvelope  className='icon md:h-4 md:w-4 text-blue-500 '/>
-        <p className='icontext text-xl'>Email.</p>
-          </div>
-          <div className='flex items-center space-x-5 space-y-2 justify-center'>
-        <CiLocationOn  className='icon md:h-6 md:w-6 text-blue-500'/>
-        <p className='icontext text-xl'>Address.</p>
-          </div>
+  <h3 className='absolute top-8 uppercase tracking-[20px] text-blue-500 md:text-xl'>Contact</h3>
+
+  <div className='flex flex-col md:flex-row mt-20 w-full justify-between items-start space-y-8 md:space-y-0 md:space-x-10'>
+
+    {/* Left side: Contact Info */}
+    <div className='flex flex-col space-y-6 md:w-1/3'>
+      <h4 className='text-md md:text-xl font-semibold text-gray-800'>
+        I have got just what you need.{" "}
+        <span className='underline decoration-blue-500 decoration-2 underline-offset-4 text-blue-600'>Let's Talk.</span>
+      </h4>
+
+      <div className='space-y-4'>
+        <div className='flex items-center space-x-4 hover:text-blue-500 transition duration-300 cursor-pointer'>
+          <FaPhoneAlt className='text-blue-500 w-5 h-5 animate-pulse' />
+          <p className='text-lg font-medium text-gray-700'>Phone</p>
         </div>
-      
- 
-    <form className='flex flex-col space-y-2 max-w-[500px]  md:bg-gray-400' onSubmit={submit} method='POST' >
-      <div  className='md:flex md:space-x-2'>
-        <input value={  name }   onChange={(e)=>setName(e.target.value)} placeholder='Name'  className="placeholder:italic placeholder:text-black contactinput" type="text" required />
-      <input value={email}  onChange={(e)=>setEmail(e.target.value)}  placeholder='Email' type="email" className="placeholder:italic placeholder:text-black contactinput"   required/> 
-        
+        <div className='flex items-center space-x-4 hover:text-blue-500 transition duration-300 cursor-pointer'>
+          <FaRegEnvelope className='text-blue-500 w-5 h-5' />
+          <p className='text-lg font-medium text-gray-700'>Email</p>
+        </div>
+        <div className='flex items-center space-x-4 hover:text-blue-500 transition duration-300 cursor-pointer'>
+          <CiLocationOn className='text-blue-500 w-6 h-6' />
+          <p className='text-lg font-medium text-gray-700'>Address</p>
+        </div>
       </div>
-      <input value={subject} onChange={(e)=>setSubject(e.target.value)}  placeholder='Subject'  className="placeholder:italic placeholder:text-black contactinput" type="text"  required/>
-      <textarea  value={massage} onChange={(e)=>setMassage(e.target.value)}  placeholder='Massage'  className="placeholder:italic placeholder:text-black contactinput" name="" id="" cols="10" rows="2" required></textarea>
-      <button className='bg-blue-500 hover:bg-blue-300 py-2 px-10 rounded-md text-black font-bold md:text-lg'>Submit</button>
-    </form>
- 
-      </div>
-    
-     
     </div>
+
+    {/* Right side: Contact Form */}
+    <form
+      className='flex flex-col space-y-3 max-w-[500px] w-full md:w-2/3 bg-gray-50 p-6 md:bg-gray-100 rounded-lg shadow-md'
+      onSubmit={submit}
+      method='POST'
+    >
+      {/* Name + Email row */}
+      <div className='md:flex md:space-x-2 w-full'>
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder='Name'
+          type='text'
+          required
+          className='w-full p-3 rounded-md border border-gray-300 placeholder:italic placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-2 md:mb-0'
+        />
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder='Email'
+          type='email'
+          required
+          className='w-full p-3 rounded-md border border-gray-300 placeholder:italic placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400'
+        />
+      </div>
+
+      {/* Subject */}
+      <input
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        placeholder='Subject'
+        type='text'
+        required
+        className='w-full p-3 rounded-md border border-gray-300 placeholder:italic placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400'
+      />
+
+      {/* Message */}
+      <textarea
+        value={massage}
+        onChange={(e) => setMassage(e.target.value)}
+        placeholder='Message'
+        rows='4'
+        required
+        className='w-full p-3 rounded-md border border-gray-300 placeholder:italic placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none'
+      ></textarea>
+
+      {/* Submit Button */}
+      <button className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-10 rounded-md font-bold md:text-lg transition duration-300 shadow-md'>
+        Submit
+      </button>
+    </form>
+
+  </div>
+</div>
+
      
   )
 }
